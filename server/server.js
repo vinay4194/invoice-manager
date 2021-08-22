@@ -7,7 +7,7 @@ const cors = require("cors");
 
 const app = express();
 const APP_PORT = process.env.PORT || 5000;
-const DB_URL = "mongodb+srv://vinay4194:vinay4194@chatroom.t5yuy.mongodb.net/assignment_morfsys?retryWrites=true&w=majority";
+const DB_URL = "";
 
 //DB Connection
 mongoose.connect(DB_URL, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });

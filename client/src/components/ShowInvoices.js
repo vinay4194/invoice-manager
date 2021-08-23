@@ -20,7 +20,7 @@ const ShowInvoices = () => {
 	const [modal, setModal] = useState(false);
 	const classes = useStyles();
 	const history = useHistory();
-	const { token, setInvoiceData } = useContext(Context);
+	const { token, invoiceData, setInvoiceData, setItems } = useContext(Context);
 
 	useEffect(() => {
 		fetch(`${baseURL}/api/get_invoices`)
@@ -28,7 +28,7 @@ const ShowInvoices = () => {
 			.then((res) => {
 				setInputData(res);
 			});
-	}, [inputData]);
+	}, [invoiceData]);
 
 	const toggleModal = () => {
 		setModal(!modal);
@@ -48,6 +48,12 @@ const ShowInvoices = () => {
 				const { message } = res;
 				if (message === "success") {
 					alert("Invoice deleted successfully");
+					setInvoiceData({
+						invoice_to: "",
+						invoice_date: "",
+						order_date: "",
+						items: [],
+					});
 				} else if (message === "unAuthorized") {
 					alert("unAuthorized, Please Login!");
 					history.push("/");
@@ -62,6 +68,7 @@ const ShowInvoices = () => {
 			.then((res) => res.json())
 			.then((res) => {
 				setInvoiceData(res);
+				setItems(res.items);
 			});
 	};
 
@@ -100,7 +107,7 @@ const ShowInvoices = () => {
 
 									<TableCell align="center">{item.invoice_to}</TableCell>
 									<TableCell align="center">{item.invoice_date.split("T")[0]}</TableCell>
-									<TableCell align="center">{item.quantity * item.rate}</TableCell>
+									<TableCell align="center">{item.total}</TableCell>
 
 									<TableCell align="center">
 										{
@@ -165,24 +172,41 @@ const ShowInvoices = () => {
 								<Grid item xs={5}>
 									<Typography variant="body1">{invoiceInfo.order_date?.split("T")[0]}</Typography>
 								</Grid>
-								<Grid item xs={5}>
-									<Typography variant="body1">Name:</Typography>
+								<Grid item xs={12}>
+									<Typography variant="h6">Items</Typography>
 								</Grid>
-								<Grid item xs={5}>
-									<Typography variant="body1">{invoiceInfo.name}</Typography>
-								</Grid>
-								<Grid item xs={5}>
-									<Typography variant="body1">Rate:</Typography>
-								</Grid>
-								<Grid item xs={5}>
-									<Typography variant="body1">{invoiceInfo.rate}</Typography>
-								</Grid>
-								<Grid item xs={5}>
-									<Typography variant="body1">Quantity:</Typography>
-								</Grid>
-								<Grid item xs={5}>
-									<Typography variant="body1">{invoiceInfo.quantity}</Typography>
-								</Grid>
+								{invoiceInfo.items?.map((item) => {
+									return (
+										<Grid container xs={6}>
+											<Grid item xs={5}>
+												<Typography variant="body1">Name: </Typography>
+											</Grid>
+											<Grid item xs={5}>
+												<Typography variant="body1">{item.name}</Typography>
+											</Grid>
+											<Grid item xs={5}>
+												<Typography variant="body1">Rate:</Typography>
+											</Grid>
+											<Grid item xs={5}>
+												<Typography variant="body1">{item.rate}</Typography>
+											</Grid>
+											<Grid item xs={5}>
+												<Typography variant="body1">Quantity:</Typography>
+											</Grid>
+											<Grid item xs={5}>
+												<Typography variant="body1" gutterBottom>
+													{item.quantity}
+												</Typography>
+											</Grid>
+											<Grid item xs={12}>
+												<Typography variant="body1" gutterBottom></Typography>
+											</Grid>
+											<Grid item xs={12}>
+												<Typography variant="body1" gutterBottom></Typography>
+											</Grid>
+										</Grid>
+									);
+								})}
 							</Grid>
 							<button onClick={toggleModal} className="close-modal">
 								CLOSE

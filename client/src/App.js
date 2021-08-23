@@ -9,18 +9,17 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.css";
 function App() {
 	const [token, setToken] = useState();
+	const [items, setItems] = useState([{ name: "", rate: "", quantity: "" }]);
 	const [invoiceData, setInvoiceData] = useState({
 		invoice_to: "",
 		invoice_date: "",
 		order_date: "",
-		name: "",
-		rate: "",
-		quantity: "",
+		items: [],
 	});
 
 	return (
 		<Router>
-			<Context.Provider value={{ token, setToken, invoiceData, setInvoiceData }}>
+			<Context.Provider value={{ token, setToken, invoiceData, setInvoiceData, items, setItems }}>
 				<div className="container">
 					<NavBar />
 

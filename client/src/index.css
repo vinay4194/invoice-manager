@@ -16,7 +16,7 @@ code {
 	text-align: center;
 	border-radius: 10px;
 	background: rgb(237, 248, 255);
-	padding-bottom: 5px;
+	padding: 8px;
 	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3);
 }
 body.active-modal {

@@ -7,10 +7,10 @@ import auth from "../middlewares/auth";
 
 router.post("/login", loginController.login);
 router.post("/register", loginController.register);
-router.post("/add_invoice", auth, addInvoiceController.add);
+router.post("/add_invoice", addInvoiceController.add);
 router.get("/get_invoices", getInvoiceController.getInvoices);
 router.get("/get_invoice/:id", getInvoiceController.getInvoice);
-router.put("/edit_invoice/:id", auth, getInvoiceController.editInvoice);
-router.post("/delete_invoice/:id", auth, getInvoiceController.deleteInvoice);
+router.put("/edit_invoice/:id", getInvoiceController.editInvoice);
+router.post("/delete_invoice/:id", getInvoiceController.deleteInvoice);
 
 export default router;

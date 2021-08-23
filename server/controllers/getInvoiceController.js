@@ -23,7 +23,9 @@ const getInvoiceController = {
 	},
 
 	async editInvoice(req, res, next) {
-		let { invoice_to, invoice_date, order_date, name, rate, quantity } = req.body;
+		let sum = 0;
+		let { invoice_to, invoice_date, order_date, items } = req.body;
+		items.forEach((item) => (sum = sum + parseInt(item.rate) * parseInt(item.quantity)));
 		let invoice;
 		try {
 			invoice = await Input.findOneAndUpdate(
@@ -32,9 +34,8 @@ const getInvoiceController = {
 					invoice_to,
 					invoice_date,
 					order_date,
-					name,
-					rate,
-					quantity,
+					items,
+					total: sum,
 				},
 				{
 					new: true,
@@ -50,7 +51,7 @@ const getInvoiceController = {
 		try {
 			await Input.findByIdAndRemove(req.params.id);
 
-			res.json({ message: "success" });
+			res.status(201).json({ message: "success" });
 		} catch (error) {
 			return next(error);
 		}

@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 const JWT_SECRET = "mysecret";
 class JwtService {
 	//Create Token
-	static sign(payload, expiry = "10m", secret = JWT_SECRET) {
+	static sign(payload, expiry = "1h", secret = JWT_SECRET) {
 		return jwt.sign(payload, secret, { expiresIn: expiry });
 	}
 	//Verify Token

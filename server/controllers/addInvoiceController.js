@@ -8,22 +8,23 @@ const addInvoiceController = {
 			invoice_to: Joi.string().required(),
 			invoice_date: Joi.date().required(),
 			order_date: Joi.date().required(),
-			name: Joi.string().required(),
-			rate: Joi.number().required(),
-			quantity: Joi.number().required(),
+			items: Joi.array().required(),
 		});
 		const { error } = addInvoiceSchema.validate(req.body);
 		if (error) {
 			return next(error);
 		}
-		const { invoice_to, invoice_date, order_date, name, rate, quantity } = req.body;
+
+		let sum = 0;
+		const { invoice_to, invoice_date, order_date, items } = req.body;
+		items.forEach((item) => (sum = sum + parseInt(item.rate) * parseInt(item.quantity)));
+
 		const input = new Input({
 			invoice_to,
 			invoice_date,
 			order_date,
-			name,
-			rate,
-			quantity,
+			items,
+			total: sum,
 		});
 		let result;
 		try {
